@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Oct 30, 2022 at 09:54 AM
--- Server version: 8.0.24
--- PHP Version: 7.4.20
+-- Generation Time: Jun 17, 2024 at 03:13 PM
+-- Server version: 8.2.0
+-- PHP Version: 8.2.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,30 +24,26 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `test_table`
+-- Table structure for table `images`
 --
 
-CREATE TABLE `test_table` (
+CREATE TABLE `images` (
   `id` int NOT NULL,
-  `name` varchar(512) NOT NULL
+  `name` varchar(255) NOT NULL,
+  `hash` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `test_table`
+-- Dumping data for table `images`
 --
 
-INSERT INTO `test_table` (`id`, `name`) VALUES
-(1, 'Lisa'),
-(2, 'Kimia');
-
---
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `test_table`
+-- Indexes for table `images`
 --
-ALTER TABLE `test_table`
+ALTER TABLE `images`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -55,10 +51,10 @@ ALTER TABLE `test_table`
 --
 
 --
--- AUTO_INCREMENT for table `test_table`
+-- AUTO_INCREMENT for table `images`
 --
-ALTER TABLE `test_table`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `images`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -5,5 +5,6 @@ block content
   if image
     img(src=`/uploads/${image.name}`, alt=image.name, width='300')
     p Name: #{image.name}
+    a(href=`/uploads/${image.name}`, download=image.name) Download
   else
     p No image found.

@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1= title
+  if images.length
+    table(border='1')
+      thead
+        tr
+          th ID
+          th Name
+      tbody
+        each image in images
+          tr(onclick=`window.location.href='/verify/${image.hash}'`)
+            td
+              p= image.id
+            td
+              p= image.name
+  else
+    p No images found.

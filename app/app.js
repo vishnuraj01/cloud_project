@@ -1,31 +1,20 @@
 // Import express.js
-const express = require("express");
+const express = require("express/index");
+const crypto = require("crypto");
+const multer = require("multer");
+const db = require('./services/db');
 
 // Create express app
 var app = express();
 
 // Add static files location
-app.use(express.static("static"));
+app.use(express.static("public"));
 
 // Use the Pug templating engine
 app.set('view engine', 'pug');
 app.set('views', './app/views');
 
-// Get the functions in the db.js file to use
-const db = require('./services/db');
-
-// // Create a route for root - /
-// app.get("/", function(req, res) {
-//     res.send("Hello world!");
-// });
-
-// // Create a route for root - /
-// app.get("/", function(req, res) {
-//     res.render("index", {'title':'My index page', 'heading':'My heading'});
-// });
-
-//multer object creation
-var multer = require('multer')
+// Configure multer for file uploads
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'public/uploads/')
@@ -42,8 +31,44 @@ app.get('/', function (req, res, next) {
     res.render('index', { title: 'Express' });
 });
 
-app.post('/', upload.single('imageupload'), function (req, res) {
-    res.send("File upload sucessfully.");
+// Handle file upload and store hash in the database
+app.post('/', upload.single('imageupload'), async function (req, res) {
+    const filePath = req.file.path;
+    const fileName = req.file.originalname;
+    const hash = crypto.createHash('sha256');
+    const fileData = require('fs').readFileSync(filePath);
+    hash.update(fileData);
+    const fileHash = hash.digest('hex');
+
+    const sql = 'INSERT INTO images (name, hash) VALUES (?, ?)';
+    await db.query(sql, [fileName, fileHash]);
+
+    res.send("File uploaded and hash stored successfully.");
+});
+
+// Verify SHA-256 hash
+app.get('/verify/:hash', function (req, res) {
+    const fileHash = req.params.hash;
+    const sql = 'SELECT * FROM images WHERE hash = ?';
+    db.query(sql, [fileHash])
+        .then(results => {
+            console.log(results);
+            if (results.length > 0) {
+                res.render('view_image', { title: 'View Image', image: results[0] });
+            } else {
+                res.send('No image found with the provided hash.');
+            }
+        })
+});
+
+// Create a route for testing the db
+app.get("/images", function (req, res) {
+    // Assumes a table called test_table exists in your database
+    sql = 'SELECT * FROM images';
+    db.query(sql).then(results => {
+        console.log(results);
+        res.render('view_all_images', { title: 'All Images', images: results });
+    });
 });
 
 // Create a route for testing the db

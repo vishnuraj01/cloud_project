@@ -6,3 +6,6 @@ block content
   form(method='post', enctype='multipart/form-data')
     input(type='file', name='imageupload')
     input(type='submit', name='uploadimage', value='Upload Image')
+  // Adding a button to view all images
+  form(action='/images', method='get')
+    input(type='submit', value='View All Images')

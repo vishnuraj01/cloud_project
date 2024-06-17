@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1= title
+  if image
+    img(src=`/uploads/${image.name}`, alt=image.name, width='300')
+    p Name: #{image.name}
+  else
+    p No image found.
